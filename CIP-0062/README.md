@@ -254,10 +254,10 @@ The following endpoints extend [CIP-30's Full API](https://github.com/cardano-fo
 Except `signVotes`, no other method should require any user
 interaction as the user has already consented to the dApp reading information
 about the wallet's state when they agreed to
-[`cardano.{walletName}.catalyst.enable()`](#cardanowalletnamecatalystenablepurpose-votingpurpose-promiseapi).
+[`cardano.{walletName}.enable()`](#cardanowalletnamecatalystenablepurpose-votingpurpose-promiseapi).
 The remaining methods
 [`api.signVotes()`](#apisignvotesvotes-vote-promisebytes) and
-[`api.signData()`](#apisubmitdelegationdelegation-delegation-promisesigneddelegationmetadata)
+[`api.submitDelegation()`](#apisubmitdelegationdelegation-delegation-promisesigneddelegationmetadata)
 must request the user's consent in an informative way for each and every API
 call in order to maintain security.
 
@@ -269,7 +269,7 @@ state to work.
 
 Errors: [`APIError`](#extended-apierror)
 
-This is a chance for dApps to ask wallets what `VotingPurpose`s the user wishes to allow the dApp access to. It is up to wallet implementors if they deem it necessary to prompt the user for their permission to share supported Purposes.
+This is a chance for dApps to ask wallets what `VotingPurpose`s they support.
 
 This information should be tracked by the dApp and used in subsequent api calls.
 
