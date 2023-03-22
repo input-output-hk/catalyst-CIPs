@@ -251,7 +251,7 @@ All TxSignErrors defined in [CIP-30](https://cips.cardano.org/cips/cip30/#txsign
 
 The following endpoints extend [CIP-30's Full API](https://github.com/cardano-foundation/CIPs/tree/master/CIP-0030#full-api).
 
-Except `signVotes`, no other method should require any user
+Except `signVotes` and `submitDelegation`, no other method should require any user
 interaction as the user has already consented to the dApp reading information
 about the wallet's state when they agreed to
 [`cardano.{walletName}.enable()`](#cardanowalletnamecatalystenablepurpose-votingpurpose-promiseapi).
