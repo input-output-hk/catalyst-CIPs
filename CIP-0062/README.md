@@ -265,7 +265,7 @@ The API chosen here is for the minimum API necessary for dApp <-> Wallet
 interactions without convenience functions that don't strictly need the wallet's
 state to work.
 
-#### api.getVotingPurposes(): Promise\<VotingPurpose>[]
+#### api.getVotingPurposes(): Promise\<VotingPurpose[]>
 
 Errors: [`APIError`](#extended-apierror)
 
