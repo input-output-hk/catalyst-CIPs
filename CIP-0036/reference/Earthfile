@@ -1,0 +1,23 @@
+VERSION 0.7
+FROM python:3.10
+WORKDIR /code
+
+deps:
+    COPY requirements.txt ./
+    RUN pip install -r requirements.txt
+
+build:
+    FROM +deps
+    COPY cip0036.py ./
+    COPY cip0036_registration_schema.cddl ./
+    COPY cip0036_deregistration_schema.cddl ./
+    COPY cip0036_witness_schema.cddl ./
+    RUN ls -al
+
+run:
+    FROM +build
+
+    RUN --no-cache python cip0036.py
+    RUN ls -al
+    SAVE ARTIFACT cip0036_registration.cbor AS LOCAL .
+    SAVE ARTIFACT cip0036_witness.cbor AS LOCAL .

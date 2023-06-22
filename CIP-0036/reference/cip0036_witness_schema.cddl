@@ -1,0 +1,34 @@
+; CIP-0036 Witness Schema
+
+; NOTE: The ROOT Entry for validation MUST be at the top of the file.
+; Common Witness for ALL CIP36 Registrations or Deregistrations.
+cip36_witness_cbor = {
+  61285: cip36-registration-witness
+}
+
+
+; Witness for an ed25519 public key
+; Raw bytes of the ed25519 Signature with the Private key
+ed25519_signature = bytes .size 64
+
+; Voter Key Witness.
+;   used to prove control over the voting key of either a direct or representative voter.
+vote_key_witness = ed25519_signature
+
+; Stake credential witness.
+;   used to prove control over the stake key used to derive voting power.
+stake_witness = ed25519_signature
+
+; CIP-15 Registrations must NOT have a voter witness.
+; CIP-15 Registrations can NOT have the same voter key as any valid CIP-36
+;        UNLESS at least one of those CIP-36 Registration includes a voter witness.
+; CIP-36 Voter Registrations can ONLY be valid if at least 1 CIP-36 registration
+;        exists with a voter witness.
+; CIP-36 Representative Registrations MUST have a voter witness.
+; CIP-36 Voter Delegations MUST NOT have a voter witness.
+; CIP-36 Deregistrations MUST NOT have a voter witness.
+; ALL Registrations/Deregistrations MUST HAVE a stake_witness.
+cip36-registration-witness = {
+  1: stake_witness
+  ? 2: vote_key_witness
+}
