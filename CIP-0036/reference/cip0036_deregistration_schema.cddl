@@ -1,0 +1,39 @@
+; CIP-36 Deregistration
+; This Schema is generic.
+
+; NOTE: The ROOT Entry for validation MUST be at the top of the file.
+; CIP36 Format Deregistration.
+cip36_deregistration_cbor = {
+  61286: voter_deregistration,
+}
+
+; Witness for a stake key credential or voter public key
+; Raw bytes of the ed25519 Public Key
+ed25519_public_key = bytes .size 32
+
+; Transaction Nonce,  highest nonce defines latests registration.
+nonce = uint
+
+; The defined voting purposes.
+voting-purposes = (
+  catalyst_voter: 0,
+  catalyst_representative: 1,
+  ; Documentation ONLY,  So that 2-999 will not validate until defined.
+  ; catalyst_reserved: uint(2..999),
+  ; Allow Custom Voting Purposes - Catalyst will not use these.
+  ; custom: uint(1000..4294967295),
+)
+voting_purpose = &voting-purposes
+
+; Stake credential used to derive voting power.
+stake_credential = $ed25519_public_key
+
+; If valid, removes all previous registrations for the purpose stated.
+voter_deregistration = {
+  2: stake_credential,
+  4: nonce,
+  5: voting_purpose => uint,
+}
+
+
+

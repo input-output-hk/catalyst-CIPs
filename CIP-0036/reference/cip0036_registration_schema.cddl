@@ -1,0 +1,110 @@
+; CIP-36 Registration or Delegation
+; This Schema is limited to Project Catalyst.  Custom implementaionts will need to modify
+; this schema for their own use by defining their own purposes.
+; NOTE: This CDDL Uses extensions from RFC9165
+
+; NOTE: Root type for validation MUST be at the top of the file.
+; CIP36 Format Registrations -
+;  - MUST NOT HAVE a vote pub key witness.
+;  - MUST NOT HAVE a Purpose.
+;  - Registeres as a Voter.
+cip36_registration_cbor = {
+  61284: cip15_voter_registration /
+         cip36_voter_registration /
+         cip36_representative_registration /
+         cip36_delegation_registration
+}
+
+
+; Witness for a stake key credential or voter public key
+; Raw bytes of the ed25519 Public Key
+ed25519_public_key = bytes .size 32
+
+; Voter Key and Witness
+vote_pub_key = ed25519_public_key
+
+; Weight assigned to a voters delegation
+weight = uint .size 4
+
+; Voters Keys or Weighted Delegation
+delegation = [ $vote_pub_key, $weight .ge 1 ]
+
+; NOTE: CBOR can not check it, but this is ONLY valid if at least 1 entry is a
+; registered representative vote pub key.
+; Unknown or catalyst_voter vote pub keys are invalid and will be ignored from
+; the delegation if present.  They will be excluded from the delegation, and the
+; weight applied to them will not be used.
+multi_delegation = [ + delegation ]
+
+; Payment Address
+payment_address = (
+  cip0019-payment_address-long /
+  cip0019-payment_address-short
+)
+
+; NOTE: RFC9165 enables field validation with ABNF.
+;   These Addresses could be checked if your tooling supports it.
+;   See CIP-0019 for ABNF Specification of these address types.
+; Shelly Payment addresses are payable (Long Form = 57 Bytes).
+cip0019-payment-address-long = bytes .size 29
+; Shelly Payment addresses are payable (Short Form = 29 Bytes).
+cip0019-payment-address-short = bytes .size 29
+; Legacy Stake Reward Addresses are unpayable and are 29 bytes long.
+cip0019-reward-address = bytes .size 29
+
+; Transaction Nonce,  highest nonce defines latests registration.
+nonce = uint
+
+; The defined voting purposes.
+voting-purposes = (
+  catalyst_voter: 0,
+  catalyst_representative: 1,
+  ; Documentation ONLY,  So that 2-999 will not validate until defined.
+  ; catalyst_reserved: uint(2..999),
+  ; Allow Custom Voting Purposes - Catalyst will not use these.
+  ; custom: uint(1000..4294967295),
+)
+voting_purpose = &voting-purposes
+
+; Stake credential used to derive voting power.
+stake_credential = ed25519_public_key
+
+; All Registration Records have these fields.
+common_registration = (
+	2: stake_credential,
+	4: nonce,
+)
+
+; The format which defines a voter is registering.
+; Defined ONLY for CIP-15 compatibility, MUST not be used for CIP-36 or CIP-62.
+cip15_voter_registration = {
+	1: vote_pub_key,
+	3: payment_address / cip0019-reward-address,
+  common_registration,
+}
+
+; The format which defines a CIP-36 voter registration.
+cip36_voter_registration = {
+	1: vote_pub_key,
+	3: payment_address,
+  common_registration,
+	5: voting_purpose => uint .eq catalyst_voter,
+}
+
+; Catalyst Representative Registration
+cip36_representative_registration = {
+	1: vote_pub_key,
+	3: payment_address,
+  common_registration,
+	5: voting_purpose => uint .eq catalyst_representative,
+}
+
+; Catalyst Delegation Registration for a voter.
+cip36_delegation_registration = {
+	1: multi_delegation,
+	3: payment_address,
+  common_registration,
+	5: voting_purpose => uint .eq catalyst_voter,
+}
+
+
