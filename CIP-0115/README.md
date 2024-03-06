@@ -40,9 +40,10 @@ This CIP would help disambiguate between these keys and inform the decoder which
 | Type | [CBOR] Tag | Type | Size | [IANA CBOR Tag Registry] |
 | -- | -- | -- | -- | -- |
 | [ED25519-BIP32 Private Key](#ed25519-bip32-private-key) | 32771 | bstr | 32 | To submit |
-| [ED25519-BIP32 Extended Private Key](#ed25519-bip32-extended-private-key) | 32772 | bstr | 64 | To submit |
+| [ED25519-BIP32 Extended Private Key](#ed25519-bip32-extended-private-key) | 32772 | bstr | 96 | To submit |
 | [ED25519-BIP32 Public Key](#ed25519-bip32-public-key) | 32773 | bstr | 32 | To submit |
-| [ED25519-BIP32 Signature](#ed25519-bip32-signature) | 32774 | bstr | 64 | To submit |
+| [ED25519-BIP32 Extended Public Key](#ed25519-bip32-extended-public-key) | 32774 | bstr | 32 | To submit |
+| [ED25519-BIP32 Signature](#ed25519-bip32-signature) | 32775 | bstr | 64 | To submit |
 
 *NOTE: These tags are preliminary and subject to change until IANA registration is complete.
 They MUST not be used outside of testing purposes.
@@ -66,12 +67,12 @@ Data for the key inside the byte string is encoded in [network byte order].
 
 This key is defined in [ED25519-BIP32].
 
-This is encoded as a byte string of size 64 bytes.
+This is encoded as a byte string of size 96 bytes.
 
 #### [CDDL]
 
 ```cddl
-ed25519_extended_private_key = #6.32772(bstr .size 64)
+ed25519_extended_private_key = #6.32772(bstr .size 96)
 ```
 
 Data for the key inside the byte string is encoded in [network byte order].
@@ -90,6 +91,20 @@ ed25519_public_key = #6.32773(bstr .size 32)
 
 Data for the key inside the byte string is encoded in [network byte order].
 
+### ED25519-BIP32 Extended Public Key
+
+This key is defined in [ED25519-BIP32].
+
+This is encoded as a byte string of size 64 bytes.
+
+#### [CDDL]
+
+```cddl
+ed25519_extended_public_key = #6.32774(bstr .size 64)
+```
+
+Data for the key inside the byte string is encoded in [network byte order].
+
 ### ED25519-BIP32 Signature
 
 [ED25519-BIP32] defines how signatures can be generated on data from private keys.
@@ -100,7 +115,7 @@ Signatures are encoded as a byte string of size 64 bytes.
 #### [CDDL]
 
 ```cddl
-ed25519_bip32_signature = #6.32774(bstr .size 64)
+ed25519_bip32_signature = #6.32775(bstr .size 64)
 ```
 
 Data for the signature inside the byte string is encoded in [network byte order].
@@ -108,7 +123,7 @@ Data for the signature inside the byte string is encoded in [network byte order]
 ## Rationale: how does this CIP achieve its goals?
 
 By defining concrete CBOR tags, it is possible for metadata to unambiguously mark the kind of data encoded.
-This is conformant with the intent of Tags in [CBOR], and aligns with [CIP-CBOR-TAGS].
+This is conformant with the intent of Tags in [CBOR], and aligns with [CIP-0114].
 
 An official published spec is required to register these Tags with [IANA][IANA CBOR Tag Registry].
 This document also serves that purpose.
@@ -117,7 +132,7 @@ This document also serves that purpose.
 
 ### Acceptance Criteria
 
-- [ ] These tags to be included in [CIP-CBOR-TAGS].
+- [ ] These tags to be included in [CIP-0114].
 - [ ] One downstream CIP uses at least one of the tags defined in this CIP.
 - [ ] IANA register all the tags as defined herein.
 
