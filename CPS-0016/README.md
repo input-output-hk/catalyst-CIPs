@@ -9,7 +9,7 @@ Proposed Solutions:
   - CIP-0013: https://github.com/cardano-foundation/CIPs/tree/master/CIP-0013
   - CIP-0099: https://github.com/cardano-foundation/CIPs/tree/master/CIP-0099
   - CIP-0107: https://github.com/cardano-foundation/CIPs/tree/master/CIP-0107
-  - CIP-XXXX: https://github.com/cardano-foundation/CIPs/tree/master/CIP-XXXX
+  - CIP-0134: https://github.com/cardano-foundation/CIPs/tree/master/CIP-0134
 Discussions:
   - https://github.com/cardano-foundation/CIPs/issues/836
   - https://github.com/cardano-foundation/CIPs/pull/559
