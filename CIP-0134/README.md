@@ -5,7 +5,9 @@ Category: Wallets
 Status: Proposed
 Authors:
   - Steven Johnson <steven.johnson@iohk.io>
-Implementors: []
+Implementors: 
+  - Arissara Chotivichit <arissara.chotivichit@iohk.io>
+  - Steven Johnson <steven.johnson@iohk.io>
 Discussions:
   - https://github.com/cardano-foundation/CIPs/pull/888
 Created: 2024-08-23
